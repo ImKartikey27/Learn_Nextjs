@@ -1,19 +1,48 @@
 "use client"
 import Link from "next/link"
-import React from "react"
+import React, { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import toast from "react-hot-toast"
 
 export default function SignupPage() {
+    const router = useRouter()
     const [user, setUser] = React.useState({
         email: "",
         password: "",
         username: ""
     })
+    const [buttonDisabled, setButtonDisabled] = React.useState(false)
+    const [loading, setLoading] = React.useState(true)
 
     const onSignup = async () => {
         // Handle signup logic
+        try {
+
+            setLoading(true)
+            const response = await axios.post("/api/users/signup", user)
+            console.log("Signup success", response.data);
+            router.push("/login")
+            
+        } catch (error:any) {
+
+            console.log("signup failed", error.message);
+            toast.error(error.message)
+            
+        }finally{
+            setLoading(false)
+        }
+
     }
+
+    useEffect(() => {
+        if(user.email.length>0 && user.password.length>0 && user.username.length>0){
+            setButtonDisabled(false)
+        }else{
+            setButtonDisabled(true)
+        }
+
+    },[user])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-800 to-gray-900 px-4">
@@ -30,7 +59,7 @@ export default function SignupPage() {
                             value={user.username}
                             onChange={(e) => setUser({ ...user, username: e.target.value })}
                             placeholder="Enter your username"
-                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 text-black"
                         />
                     </div>
 
@@ -42,7 +71,7 @@ export default function SignupPage() {
                             value={user.email}
                             onChange={(e) => setUser({ ...user, email: e.target.value })}
                             placeholder="Enter your email"
-                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 text-black"
                         />
                     </div>
 
@@ -54,7 +83,7 @@ export default function SignupPage() {
                             value={user.password}
                             onChange={(e) => setUser({ ...user, password: e.target.value })}
                             placeholder="Enter your password"
-                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 text-black"
                         />
                     </div>
 
@@ -62,7 +91,7 @@ export default function SignupPage() {
                         onClick={onSignup}
                         className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow-md transition duration-300"
                     >
-                        Sign Up
+                        {buttonDisabled ? "Enter Details" : "SignUP"}
                     </button>
 
                     <p className="text-center text-sm text-zinc-600 mt-4">

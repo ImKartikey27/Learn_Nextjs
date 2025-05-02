@@ -1,5 +1,8 @@
 import { log } from "console";
 import mongoose from "mongoose";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 export async function connect(){
     try {
