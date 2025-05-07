@@ -6,6 +6,7 @@ dotenv.config()
 
 
 
+
 export async function connect(){
     try {
         mongoose.connect(process.env.MONGO_DB_URI!);
