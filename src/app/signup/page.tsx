@@ -89,6 +89,7 @@ export default function SignupPage() {
 
                     <button
                         onClick={onSignup}
+                        disabled= {buttonDisabled}
                         className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow-md transition duration-300"
                     >
                         {buttonDisabled ? "Enter Details" : "SignUP"}

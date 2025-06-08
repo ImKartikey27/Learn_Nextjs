@@ -7,8 +7,7 @@ import axios from "axios"
 export default function SignupPage() {
     const [user, setUser] = React.useState({
         email: "",
-        password: "",
-        username: ""
+        password: ""
     })
 
     const onLogin = async () => {
