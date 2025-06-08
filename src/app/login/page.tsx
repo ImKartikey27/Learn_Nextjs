@@ -1,18 +1,44 @@
 "use client"
 import Link from "next/link"
-import React from "react"
+import React, { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import toast from "react-hot-toast"
 
-export default function SignupPage() {
+export default function LoginPage() {
+    const router = useRouter()
     const [user, setUser] = React.useState({
         email: "",
         password: ""
     })
+    const [buttonDisabled, setButtonDisabled] = React.useState(false)
+    const [loading, setLoading] = React.useState(false)
 
     const onLogin = async () => {
-        // Handle signup logic
+
+        try {
+            setLoading(true)
+            const response = await axios.post("/api/users/login",user)
+            toast.success("Login successful")
+            router.push("/profile")
+            
+        } catch (error: any) {
+            console.log("login failed", error.message);
+            toast.error(error.message)
+        }
+        finally{
+            setLoading(false)
+        }
+
     }
+
+    useEffect(() => {
+        if(user.email.length > 0 && user.password.length > 0){
+            setButtonDisabled(false)
+        }else{
+            setButtonDisabled(true)
+        }
+    })
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-800 to-gray-900 px-4">
@@ -30,7 +56,7 @@ export default function SignupPage() {
                             value={user.email}
                             onChange={(e) => setUser({ ...user, email: e.target.value })}
                             placeholder="Enter your email"
-                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 text-black"
                         />
                     </div>
 
@@ -42,7 +68,7 @@ export default function SignupPage() {
                             value={user.password}
                             onChange={(e) => setUser({ ...user, password: e.target.value })}
                             placeholder="Enter your password"
-                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                            className="mt-1 w-full px-4 py-2 border border-zinc-300 rounded-lg bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 text-black"
                         />
                     </div>
 

@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
 
 })
 
+//mongoose.models.users because we need to use this model in multiple places and if this already exists we don't want to override it
 const User = mongoose.models.users || mongoose.model("users", userSchema)
 
 export default User
