@@ -76,7 +76,7 @@ export default function LoginPage() {
                         onClick={onLogin}
                         className="mt-4 w-full py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow-md transition duration-300"
                     >
-                        Log In
+                        {loading ? "Loading..." : "Login"}
                     </button>
 
                     <p className="text-center text-sm text-zinc-600 mt-4">
